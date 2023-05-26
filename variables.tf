@@ -39,11 +39,6 @@ variable "name" {
 variable "cron_schedule" {
   type        = string
   description = "cron schedule (e.g. * * * * *)"
-
-  validation {
-    condition     = can(regex("^[*\\/0-9,-]+$", var.cron_schedule))
-    error_message = "Invalid value for 'cron_schedule'. Must be a valid cron schedule pattern."
-  }
 }
 
 variable "cron_time_zone" {
