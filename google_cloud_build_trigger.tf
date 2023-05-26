@@ -11,7 +11,7 @@ resource "google_cloudbuild_trigger" "monitor" {
   build {
     timeout = var.timeout
     substitutions = {
-      _BUCKET_PATHS : "${each.key}"
+      _BUCKET_PATHS : "${each.value}"
       _ALERT_THRESHOLD : var.threshold
       _CLOUD_LOGGING_SEVERITY : "WARNING"
       _SERVICE_NAME : var.name
