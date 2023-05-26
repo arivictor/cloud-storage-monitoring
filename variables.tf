@@ -1,8 +1,3 @@
-variable "name" {
-  type        = string
-  description = "service name"
-}
-
 variable "bucket_paths" {
   type        = list(string)
   description = "list of bucket paths"
@@ -11,16 +6,6 @@ variable "bucket_paths" {
     condition     = length(var.bucket_paths) >= 1
     error_message = "length of 'bucket_paths' cannot be 0"
   }
-}
-
-variable "cron_schedule" {
-  type        = string
-  description = "cron schedule (e.g. * * * * *)"
-}
-
-variable "cron_time_zone" {
-  type        = string
-  description = "cron time zone (e.g. Australia/Melbourne)"
 }
 
 variable "region" {
@@ -36,23 +21,67 @@ variable "region" {
   }
 }
 
-variable "threshold" {
-  type        = string
-  description = "object threshold before log is created"
-}
-
-variable "timeout" {
-  type        = string
-  description = "timeout before build fails (e.g. 300s, 7200s)"
-}
-
-variable "service_account" {
-  type        = string
-  description = "service account email"
-}
-
 variable "notification_channels" {
   type        = list(string)
   description = "notication channel ids (['projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]'])"
 }
 
+variable "name" {
+  type        = string
+  description = "service name"
+
+  validation {
+    condition     = can(regex("^[_a-zA-Z0-9-]+$", var.name))
+    error_message = "Invalid value for 'name'. Only alphanumeric characters, underscores, and hyphens are allowed."
+  }
+}
+
+variable "cron_schedule" {
+  type        = string
+  description = "cron schedule (e.g. * * * * *)"
+
+  validation {
+    condition     = can(regex("^[*\\/0-9,-]+$", var.cron_schedule))
+    error_message = "Invalid value for 'cron_schedule'. Must be a valid cron schedule pattern."
+  }
+}
+
+variable "cron_time_zone" {
+  type        = string
+  description = "cron time zone (e.g. Australia/Melbourne)"
+
+  validation {
+    condition     = can(regex("^[a-zA-Z_]+\\/[a-zA-Z_]+$", var.cron_time_zone))
+    error_message = "Invalid value for 'cron_time_zone'. Must be a valid time zone pattern (e.g., <country>/<city>)."
+  }
+}
+
+variable "threshold" {
+  type        = string
+  description = "object threshold before log is created"
+
+  validation {
+    condition     = can(regex("^\\d+$", var.threshold))
+    error_message = "Invalid value for 'threshold'. Must be a string number."
+  }
+}
+
+variable "timeout" {
+  type        = string
+  description = "timeout before build fails (e.g. 300s, 7200s)"
+
+  validation {
+    condition     = can(regex("^\\d+s$", var.timeout))
+    error_message = "Invalid value for 'timeout'. Must be a number followed by 's' (e.g., '1000s')."
+  }
+}
+
+variable "service_account" {
+  type        = string
+  description = "service account email"
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", var.service_account))
+    error_message = "Invalid value for 'service_account'. Must be a valid email address."
+  }
+}
