@@ -1,5 +1,5 @@
 resource "google_cloudbuild_trigger" "monitor" {
-  for_each        = local.bucket_paths
+  for_each = local.bucket_paths
 
   name            = format("%s-%s", var.name, each.key)
   description     = format("monitoring %s", each.value)
