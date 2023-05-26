@@ -1,4 +1,4 @@
-# Terraform Module: cloud-storage-monitoring
+# Terraform Module: Storage Monitor
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
