@@ -8,7 +8,7 @@ resource "google_monitoring_alert_policy" "object_gt_threshold" {
     condition_matched_log {
       filter = <<-EOT
             severity=WARNING
-            logName="projects/${data.google_project.current.project_id}/${var.name}"
+            logName="projects/${data.google_project.current.project_id}/logs/${var.name}"
             jsonPayload.object_count >= ${var.threshold}
         EOT
     }
